@@ -51,11 +51,29 @@
     td {
       padding: 5px;
     }
+
+    input {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid rgb(76, 76, 217);
+      border-radius: 5px;
+      outline: none;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.3s ease-in-out;
+      width: 250px;
+    }
+
+    /* Styling for the input field when focused */
+    input:focus {
+      border-color: rgb(17, 80, 129);
+    }
   </style>
 </head>
 <body>
   <div class="countdown-container">
     <h1>Countdown Timer</h1>
+    <input type="datetime-local" id="targetTime" placeholder="Choose Target Time">
     <div class="countdown" id="countdown">
       <table>
         <tr>
@@ -76,7 +94,19 @@
   </div>
   <script>
    
-    const targetDate = new Date("2023-12-31 23:59:59").getTime();
+    // const targetDate = new Date("2023-12-31 23:59:59").getTime();
+
+    // Function to handle the input change
+    function handleInputChange() {
+      const targetDateTime = new Date(document.getElementById("targetTime").value).getTime();
+      if (!isNaN(targetDateTime)) {
+        targetDate = targetDateTime;
+        updateCountdown();
+      }
+    }
+
+    // Add event listener to the input field
+    document.getElementById("targetTime").addEventListener("change", handleInputChange);
 
     function updateCountdown() {
       const now = new Date().getTime();
@@ -99,6 +129,8 @@
 
     // Update the countdown every second
     setInterval(updateCountdown, 1000);
+
+     
   </script>
 </body>
 </html>
