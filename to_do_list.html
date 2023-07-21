@@ -1,103 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>To-Do List</title>
-    <style>
-        .container{            
-            text-align: center;            
-            border: 5px;            
-            background-color: #1ff772;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0.5, 0.6);
-        }
-        
-        body {
-            display:grid;
-            justify-content:center;
-            height: 30vh;
-            font-family: Arial, sans-serif;         
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: rgb(202, 205, 207);
+    }
 
-        #taskInput {
-            width: 250px;
-            padding: 10px;
-            margin-right: 10px;                     
-        }
+    .countdown-container {
+      text-align: center;
+      background-color: rgb(250, 255, 99);
+      height: 25vh;
+      width: 50vh;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0.3, 0.3);
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+    }
 
-        #addBtn {
-            padding: 10px 10px;
-            background-color: rgb(2, 231, 231);
-            border-radius: 5px;
-            font-size: 16px;
-            border: none;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0.2, 0.3);           
-        }
+    h1{
+        color: rgb(76, 76, 217);
+        text-shadow: 0px 1px 2px rgba(0, 0, 0.3, 0.3);
+    }
 
-        ul {
-            list-style-type: none;
-            padding: 10px;
-        }
+    .countdown {
+      font-size: 22px;
+      font-weight: bold;
+      
+    }
 
-        li {           
-            margin-bottom: 10px;
-            font-size: medium;            
-        }       
+    span {
+      padding: 5px 15px;
+    }
 
-        input[type="checkbox"] {
-            transform: scale(1.5); 
-            margin-right: 10px; 
-        }
-       
-    </style>
+    table {
+      margin-top: 5px; 
+      color: rgb(17, 80, 129);
+    }
 
+    td {
+      padding: 5px;
+    }
+
+    input {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid rgb(76, 76, 217);
+      border-radius: 5px;
+      outline: none;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.3s ease-in-out;
+      width: 250px;
+    }
+
+    /* Styling for the input field when focused */
+    input:focus {
+      border-color: rgb(17, 80, 129);
+    }
+  </style>
 </head>
-
 <body>
-    
-    <div class="container">
-        <h2>To-Do List</h2><br>
-        <input type="text" id="taskInput" placeholder="Enter a new task...">
-        <button id="addBtn" onclick="addTask()">Add</button><br>
-        <ul id="taskList">
+  <div class="countdown-container">
+    <h1>Countdown Timer</h1>
+    <input type="datetime-local" id="targetTime" placeholder="Choose Target Time">
+    <div class="countdown" id="countdown">
+      <table>
+        <tr>
+          <td><span id="days">00</span></td>
+          <td><span id="hours">00</span></td>
+          <td><span id="minutes">00</span></td>
+          <td><span id="seconds">00</span></td>
+        </tr>
 
-        </ul>
-        
-    </div>  
-    
-    <script>
-       
-        function addTask() {
-            var taskInput = document.getElementById("taskInput");
-            var taskText = taskInput.value.trim();
+        <tr>
+          <td>days</td>
+          <td>hrs</td>
+          <td>min</td>
+          <td>sec</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <script>
+   
+    // const targetDate = new Date("2023-12-31 23:59:59").getTime();
 
-            if (taskText === "") {
-                return;
-            }
+    // Function to handle the input change
+    function handleInputChange() {
+      const targetDateTime = new Date(document.getElementById("targetTime").value).getTime();
+      if (!isNaN(targetDateTime)) {
+        targetDate = targetDateTime;
+        updateCountdown();
+      }
+    }
 
-            var taskList = document.getElementById("taskList");
+    // Add event listener to the input field
+    document.getElementById("targetTime").addEventListener("change", handleInputChange);
 
-            var li = document.createElement("li");
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const timeRemaining = targetDate - now;
 
-            var checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
 
-            var span = document.createElement("span");        
-            
-            span.textContent = taskText;
-            
-            checkbox.addEventListener("click", function () {
-                li.remove();
-            });
+      document.getElementById("days").innerText = formatTime(days);
+      document.getElementById("hours").innerText = formatTime(hours);
+      document.getElementById("minutes").innerText = formatTime(minutes);
+      document.getElementById("seconds").innerText = formatTime(seconds);
+    }
 
-            li.appendChild(checkbox);
-            li.appendChild(span);     
-            taskList.appendChild(li);
+    function formatTime(time) {
+      return time < 10 ? `0${time}` : time;
+    }
 
-            taskInput.value = "";
-        }
+    // Update the countdown every second
+    setInterval(updateCountdown, 1000);
 
-        
-    </script>
+     
+  </script>
 </body>
 </html>
