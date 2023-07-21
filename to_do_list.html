@@ -64,7 +64,7 @@
       width: 250px;
     }
 
-    /* Styling for the input field when focused */
+    
     input:focus {
       border-color: rgb(17, 80, 129);
     }
@@ -94,9 +94,7 @@
   </div>
   <script>
    
-    // const targetDate = new Date("2023-12-31 23:59:59").getTime();
-
-    // Function to handle the input change
+   
     function handleInputChange() {
       const targetDateTime = new Date(document.getElementById("targetTime").value).getTime();
       if (!isNaN(targetDateTime)) {
@@ -105,7 +103,7 @@
       }
     }
 
-    // Add event listener to the input field
+   
     document.getElementById("targetTime").addEventListener("change", handleInputChange);
 
     function updateCountdown() {
@@ -127,7 +125,8 @@
       return time < 10 ? `0${time}` : time;
     }
 
-    // Update the countdown every second
+   
+    
     setInterval(updateCountdown, 1000);
 
      
